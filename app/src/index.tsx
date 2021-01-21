@@ -16,7 +16,30 @@ type DetailProps = {
   classification: FeeClassification;
 }
 
-class Detail extends React.Component <DetailProps, {}> {
+type DetailState = {
+  numOfPeople: number;
+}
+
+class Detail extends React.Component <DetailProps, DetailState> {
+  
+  // コンストラクタでstateを設定する
+  constructor(props: DetailProps) {
+    super(props);
+    this.state = {
+      numOfPeople: props.classification.numOfPeople
+    }
+  }
+  
+  // stateの値を変更する （セレクトボックスの値が変更された場合に呼び出しされる）
+  onNumOfPeopleChange( e: React.ChangeEvent<HTMLSelectElement> ): void {
+    const num: number = Number(e.target.value);
+    this.setState(
+      {
+        numOfPeople: num,
+      }
+    );
+  }
+  
   render() {
     return (
       <div >
@@ -24,7 +47,10 @@ class Detail extends React.Component <DetailProps, {}> {
         <div className="description">{this.props.classification.description}</div>
         <div className="unit-price">{this.props.classification.unitPrice}</div>
         <div className="num-people">
-          <select value="0">
+          <select
+            value={this.state.numOfPeople}
+            onChange={e => this.onNumOfPeopleChange(e)}
+          >
             <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
